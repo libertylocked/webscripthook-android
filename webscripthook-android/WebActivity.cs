@@ -31,7 +31,10 @@ namespace webscripthook_android
             webView.Settings.JavaScriptEnabled = true;
             webView.SetWebViewClient(new WebViewClient()); // stops request going to Web Browser
 
-            webView.LoadUrl(Intent.GetStringExtra("Address"));
+            if (savedInstanceState == null)
+            {
+                webView.LoadUrl(Intent.GetStringExtra("Address"));
+            }
         }
 
         public override void OnBackPressed()
@@ -44,6 +47,18 @@ namespace webscripthook_android
             {
                 base.OnBackPressed();
             }
+        }
+
+        protected override void OnSaveInstanceState (Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            webView.SaveState(outState);
+        }
+
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            base.OnRestoreInstanceState(savedInstanceState);
+            webView.RestoreState(savedInstanceState);
         }
     }
 }
