@@ -13,7 +13,8 @@ using Android.Widget;
 
 namespace webscripthook_android
 {
-    [Activity(Label = "GTAV WebScriptHook", ScreenOrientation = ScreenOrientation.Sensor)]
+    [Activity(Label = "GTAV WebScriptHook", ScreenOrientation = ScreenOrientation.Sensor, 
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class WebActivity : Activity
     {
         WebView webView;
@@ -47,18 +48,6 @@ namespace webscripthook_android
             {
                 base.OnBackPressed();
             }
-        }
-
-        protected override void OnSaveInstanceState (Bundle outState)
-        {
-            base.OnSaveInstanceState(outState);
-            webView.SaveState(outState);
-        }
-
-        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
-        {
-            base.OnRestoreInstanceState(savedInstanceState);
-            webView.RestoreState(savedInstanceState);
         }
     }
 }
