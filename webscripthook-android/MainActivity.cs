@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Net;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -77,9 +79,16 @@ namespace webscripthook_android
             bool connected = false;
             try
             {
-                var webClient = new System.Net.WebClient();
-                var response = webClient.DownloadString("http://" + ipAddr + ":" + port + "/connected");
-                connected = response.ToLower() == "true";
+                WebRequest request = WebRequest.Create("http://" + ipAddr + ":" + port + "/connected");
+                request.Timeout = 1000;
+                request.Method = "GET";
+                WebResponse response = request.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                string content = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+                
+                connected = content.ToLower() == "true";
                 if (!connected)
                 {
                     Toast.MakeText(ApplicationContext, "Plugin not connected!\nIs the game running?", ToastLength.Long).Show();
